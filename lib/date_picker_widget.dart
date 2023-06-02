@@ -1,5 +1,3 @@
-
-
 import 'package:date_picker_timeline/date_widget.dart';
 import 'package:date_picker_timeline/extra/color.dart';
 import 'package:date_picker_timeline/extra/style.dart';
@@ -40,7 +38,7 @@ class DatePicker extends StatefulWidget {
   final TextStyle dateTextStyle;
 
   /// Current Selected Date
-  final DateTime?/*?*/ initialSelectedDate;
+  final DateTime? /*?*/ initialSelectedDate;
 
   /// Contains the list of inactive dates.
   /// All the dates defined in this List will be deactivated
@@ -60,6 +58,8 @@ class DatePicker extends StatefulWidget {
   /// Locale for the calendar default: en_us
   final String locale;
 
+  final List<DateTime>? hasItemDates;
+
   DatePicker(
     this.startDate, {
     Key? key,
@@ -78,6 +78,7 @@ class DatePicker extends StatefulWidget {
     this.daysCount = 500,
     this.onDateChange,
     this.locale = "en_US",
+    this.hasItemDates,
   }) : assert(
             activeDates == null || inactiveDates == null,
             "Can't "
@@ -112,9 +113,9 @@ class _DatePickerState extends State<DatePicker> {
     }
 
     this.selectedDateStyle =
-      widget.dateTextStyle.copyWith(color: widget.selectedTextColor);
+        widget.dateTextStyle.copyWith(color: widget.selectedTextColor);
     this.selectedMonthStyle =
-      widget.monthTextStyle.copyWith(color: widget.selectedTextColor);
+        widget.monthTextStyle.copyWith(color: widget.selectedTextColor);
     this.selectedDayStyle =
         widget.dayTextStyle.copyWith(color: widget.selectedTextColor);
 
@@ -145,6 +146,8 @@ class _DatePickerState extends State<DatePicker> {
 
           bool isDeactivated = false;
 
+          bool hasItem = false;
+
           // check if this date needs to be deactivated for only DeactivatedDates
           if (widget.inactiveDates != null) {
 //            print("Inside Inactive dates.");
@@ -163,6 +166,16 @@ class _DatePickerState extends State<DatePicker> {
               // Compare the date if it is in the
               if (_compareDate(date, activateDate)) {
                 isDeactivated = false;
+                break;
+              }
+            }
+          }
+
+          // check if this date has items or not
+          if (widget.hasItemDates != null) {
+            for (DateTime hasItemDate in widget.hasItemDates!) {
+              if (_compareDate(date, hasItemDate)) {
+                hasItem = true;
                 break;
               }
             }
@@ -194,6 +207,7 @@ class _DatePickerState extends State<DatePicker> {
             locale: widget.locale,
             selectionColor:
                 isSelected ? widget.selectionColor : Colors.transparent,
+            hasItem: hasItem,
             onDateSelected: (selectedDate) {
               // Don't notify listener if date is deactivated
               if (isDeactivated) return;
@@ -266,14 +280,15 @@ class DatePickerController {
   void setDateAndAnimate(DateTime date,
       {duration = const Duration(milliseconds: 500), curve = Curves.linear}) {
     assert(_datePickerState != null,
-    'DatePickerController is not attached to any DatePicker View.');
+        'DatePickerController is not attached to any DatePicker View.');
 
     _datePickerState!._controller.animateTo(_calculateDateOffset(date),
         duration: duration, curve: curve);
 
     if (date.compareTo(_datePickerState!.widget.startDate) >= 0 &&
-    date.compareTo(_datePickerState!.widget.startDate.add(
-        Duration(days: _datePickerState!.widget.daysCount))) <= 0) {
+        date.compareTo(_datePickerState!.widget.startDate
+                .add(Duration(days: _datePickerState!.widget.daysCount))) <=
+            0) {
       // date is in the range
       _datePickerState!._currentDate = date;
     }

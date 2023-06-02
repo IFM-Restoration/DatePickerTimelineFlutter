@@ -29,7 +29,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   DateTime _selectedValue = DateTime.now();
 
-
   @override
   void initState() {
     super.initState();
@@ -38,12 +37,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.replay),
-        onPressed: () {
-          _controller.animateToSelection();
-        },
-      ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.replay),
+          onPressed: () {
+            _controller.setDateAndAnimate(DateTime.now());
+          },
+        ),
         appBar: AppBar(
           title: Text(widget.title!),
         ),
@@ -65,15 +64,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: DatePicker(
                   DateTime.now(),
                   width: 60,
-                  height: 80,
+                  height: 110,
                   controller: _controller,
                   initialSelectedDate: DateTime.now(),
-                  selectionColor: Colors.black,
+                  selectionColor: Colors.blue,
                   selectedTextColor: Colors.white,
+                  daysCount: 14,
                   inactiveDates: [
                     DateTime.now().add(Duration(days: 3)),
                     DateTime.now().add(Duration(days: 4)),
                     DateTime.now().add(Duration(days: 7))
+                  ],
+                  hasItemDates: [
+                    DateTime.now().add(Duration(days: 3)),
                   ],
                   onDateChange: (date) {
                     // New date selected

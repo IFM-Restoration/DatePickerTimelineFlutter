@@ -16,6 +16,7 @@ class DateWidget extends StatelessWidget {
   final Color selectionColor;
   final DateSelectionCallback? onDateSelected;
   final String? locale;
+  final bool hasItem;
 
   DateWidget({
     required this.date,
@@ -26,6 +27,7 @@ class DateWidget extends StatelessWidget {
     this.width,
     this.onDateSelected,
     this.locale,
+    this.hasItem = false,
   });
 
   @override
@@ -44,11 +46,36 @@ class DateWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(new DateFormat("MMM", locale).format(date).toUpperCase(), // Month
+              Text(
+                  new DateFormat("MMM", locale)
+                      .format(date)
+                      .toUpperCase(), // Month
                   style: monthTextStyle),
-              Text(date.day.toString(), // Date
-                  style: dateTextStyle),
-              Text(new DateFormat("E", locale).format(date).toUpperCase(), // WeekDay
+              Container(
+                width: 40,
+                padding: const EdgeInsets.only(
+                  bottom: 2,
+                ),
+                decoration: BoxDecoration(
+                  border: hasItem
+                      ? Border(
+                          bottom: BorderSide(
+                            color: Color(0xFFD80F0F),
+                            width: 3.5,
+                          ),
+                        )
+                      : null,
+                ),
+                child: Text(
+                  date.day.toString(), // Date
+                  style: dateTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Text(
+                  new DateFormat("E", locale)
+                      .format(date)
+                      .toUpperCase(), // WeekDay
                   style: dayTextStyle)
             ],
           ),
