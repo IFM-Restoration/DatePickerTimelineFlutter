@@ -137,12 +137,19 @@ class _DatePickerState extends State<DatePicker> {
         onNotification: (ScrollNotification scrollInfo) {
           // Print yes while scrolling
           if (scrollInfo is ScrollStartNotification) {
-            setState(() {});
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              setState(() {});
+            });
             return true;
           } else if (scrollInfo is ScrollUpdateNotification) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              setState(() {});
+            });
             return true;
           } else if (scrollInfo is ScrollEndNotification) {
-            setState(() {});
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              setState(() {});
+            });
             return true;
           } else {
             return false;
