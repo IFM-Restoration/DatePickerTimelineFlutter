@@ -137,19 +137,28 @@ class _DatePickerState extends State<DatePicker> {
         onNotification: (ScrollNotification scrollInfo) {
           // Print yes while scrolling
           if (scrollInfo is ScrollStartNotification) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              setState(() {});
-            });
+            if (mounted) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                setState(() {});
+              });
+            }
+
             return true;
           } else if (scrollInfo is ScrollUpdateNotification) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              setState(() {});
-            });
+            if (mounted) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                setState(() {});
+              });
+            }
+
             return true;
           } else if (scrollInfo is ScrollEndNotification) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              setState(() {});
-            });
+            if (mounted) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                setState(() {});
+              });
+            }
+
             return true;
           } else {
             return false;
@@ -304,7 +313,6 @@ class DatePickerController {
   /// this will also set that date as the current selected date
   void setDateAndAnimate(DateTime date,
       {duration = const Duration(milliseconds: 500), curve = Curves.linear}) {
-    print("DATE: $date");
     assert(_datePickerState != null,
         'DatePickerController is not attached to any DatePicker View.');
 
@@ -329,7 +337,6 @@ class DatePickerController {
         _datePickerState!.widget.startDate.day);
 
     int offset = date.difference(startDate).inDays;
-    print("OFFSET $offset");
     return (offset * _datePickerState!.widget.width) + (offset * 6);
   }
 }
