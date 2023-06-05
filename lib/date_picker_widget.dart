@@ -140,8 +140,6 @@ class _DatePickerState extends State<DatePicker> {
             setState(() {});
             return true;
           } else if (scrollInfo is ScrollUpdateNotification) {
-            print("Scroll Update");
-
             return true;
           } else if (scrollInfo is ScrollEndNotification) {
             setState(() {});
@@ -154,6 +152,7 @@ class _DatePickerState extends State<DatePicker> {
           itemCount: widget.daysCount,
           scrollDirection: Axis.horizontal,
           controller: _controller,
+          physics: ClampingScrollPhysics(),
           itemBuilder: (context, index) {
             // get the date object based on the index position
             // if widget.startDate is null then use the initialDateValue
