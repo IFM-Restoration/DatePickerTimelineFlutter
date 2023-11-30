@@ -9,11 +9,13 @@ import 'package:date_picker_timeline/gestures/tap.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DateWidget extends StatelessWidget {
+// ignore: must_be_immutable
+class DateWidget extends StatefulWidget {
   final double? width;
   final DateTime date;
   final TextStyle? monthTextStyle, dayTextStyle, dateTextStyle;
   final Color selectionColor;
+  final Color bottomLineColor;
   final DateSelectionCallback? onDateSelected;
   final String? locale;
   final bool hasItem;
@@ -24,6 +26,7 @@ class DateWidget extends StatelessWidget {
     required this.dayTextStyle,
     required this.dateTextStyle,
     required this.selectionColor,
+    required this.bottomLineColor,
     this.width,
     this.onDateSelected,
     this.locale,
@@ -31,14 +34,19 @@ class DateWidget extends StatelessWidget {
   });
 
   @override
+  State<DateWidget> createState() => _DateWidgetState();
+}
+
+class _DateWidgetState extends State<DateWidget> {
+  @override
   Widget build(BuildContext context) {
     return InkWell(
       child: Container(
-        width: width,
+        width: widget.width,
         margin: EdgeInsets.all(3.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          color: selectionColor,
+          color: widget.selectionColor,
         ),
         child: Padding(
           padding: EdgeInsets.all(8),
@@ -47,45 +55,46 @@ class DateWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                  new DateFormat("MMM", locale)
-                      .format(date)
+                  new DateFormat("MMM", widget.locale)
+                      .format(widget.date)
                       .toUpperCase(), // Month
-                  style: monthTextStyle),
+                  style: widget.monthTextStyle),
               Container(
-                width: 40,
+                width: 50,
                 padding: const EdgeInsets.only(
-                  bottom: 2,
-                ),
-                decoration: BoxDecoration(
-                  border: hasItem
-                      ? Border(
-                          bottom: BorderSide(
-                            color: Color(0xFFD80F0F),
-                            width: 3.5,
-                          ),
-                        )
-                      : null,
+                  bottom: 0,
                 ),
                 child: Text(
-                  date.day.toString(), // Date
-                  style: dateTextStyle,
+                  widget.date.day.toString(), // Date
+                  style: widget.dateTextStyle,
                   textAlign: TextAlign.center,
                 ),
               ),
+              SizedBox(
+                width: 35,
+                child: Divider(
+                  height: 0,
+                  color: widget.bottomLineColor,
+                  thickness: 3,
+                ),
+              ),
               Text(
-                  new DateFormat("E", locale)
-                      .format(date)
+                  new DateFormat("E", widget.locale)
+                      .format(widget.date)
                       .toUpperCase(), // WeekDay
-                  style: dayTextStyle)
+                  style: widget.dayTextStyle)
             ],
           ),
         ),
       ),
       onTap: () {
+        setState(() {
+          // Set the date selected to true, but any other date to false
+        });
         // Check if onDateSelected is not null
-        if (onDateSelected != null) {
+        if (widget.onDateSelected != null) {
           // Call the onDateSelected Function
-          onDateSelected!(this.date);
+          widget.onDateSelected!(this.widget.date);
         }
       },
     );

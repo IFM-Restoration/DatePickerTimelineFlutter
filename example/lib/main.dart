@@ -71,11 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   selectedTextColor: Colors.white,
                   daysCount: 14,
                   inactiveDates: [
-                    DateTime.now().add(Duration(days: 3)),
-                    DateTime.now().add(Duration(days: 4)),
-                    DateTime.now().add(Duration(days: 7))
+                    // DateTime.now().add(Duration(days: 3)),
+                    // DateTime.now().add(Duration(days: 4)),
+                    // DateTime.now().add(Duration(days: 7))
                   ],
                   hasItemDates: [
+                    DateTime.now(),
                     DateTime.now().add(Duration(days: 3)),
                   ],
                   onDateChange: (date) {

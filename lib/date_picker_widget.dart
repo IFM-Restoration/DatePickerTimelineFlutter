@@ -96,6 +96,8 @@ class _DatePickerState extends State<DatePicker> {
   late final TextStyle selectedDateStyle;
   late final TextStyle selectedMonthStyle;
   late final TextStyle selectedDayStyle;
+  late final Color selectedBottomLineColor;
+  late final Color unselectedBottomLineColor;
 
   late final TextStyle deactivatedDateStyle;
   late final TextStyle deactivatedMonthStyle;
@@ -118,6 +120,7 @@ class _DatePickerState extends State<DatePicker> {
         widget.monthTextStyle.copyWith(color: widget.selectedTextColor);
     this.selectedDayStyle =
         widget.dayTextStyle.copyWith(color: widget.selectedTextColor);
+    this.selectedBottomLineColor = Colors.white;
 
     this.deactivatedDateStyle =
         widget.dateTextStyle.copyWith(color: widget.deactivatedColor);
@@ -125,6 +128,7 @@ class _DatePickerState extends State<DatePicker> {
         widget.monthTextStyle.copyWith(color: widget.deactivatedColor);
     this.deactivatedDayStyle =
         widget.dayTextStyle.copyWith(color: widget.deactivatedColor);
+    this.unselectedBottomLineColor = Colors.black;
 
     super.initState();
   }
@@ -236,6 +240,11 @@ class _DatePickerState extends State<DatePicker> {
                   : isSelected
                       ? selectedDayStyle
                       : widget.dayTextStyle,
+              bottomLineColor: isSelected && hasItem
+                  ? selectedBottomLineColor
+                  : hasItem
+                      ? unselectedBottomLineColor
+                      : Colors.transparent,
               width: widget.width,
               locale: widget.locale,
               selectionColor:
